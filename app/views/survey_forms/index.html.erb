@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="col-md-12">
+    <h3>Survey Forms</h3>
+    <table class="table table-bordred">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Give Answers </th>
+          <th colspan="4">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @survey_forms.each do |survey_form| %>
+          <tr>
+            <td><%= survey_form.name %></td>
+            <td><%= survey_form.description %></td>
+            <td>
+              <% if current_user.has_role? "admin"%>
+                <%= link_to 'Fill Survey Form', "#", class: "btn btn-info"%>
+                <td><%= link_to 'Show', survey_form, class: "btn btn-success" %></td>
+                <td><%= link_to 'Edit', edit_survey_form_path(survey_form), class: "btn btn-primary" %></td>
+                <td><%= link_to 'Destroy', survey_form, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+              <%else%>
+                <%= ensure_survey_form(survey_form.id) ? (link_to 'Fill Survey Form', "#", class: "btn btn-info") : (link_to 'Fill Survey Form', submit_survey_details_survey_form_path(survey_form), class: "btn btn-info") %>
+                <td>--</td>
+              <%end%>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to 'New Survey Form', new_survey_form_path, class: "btn btn-info" if current_user.has_role? "admin"%>
+    <br><br>
+    <%= link_to('Sign out', destroy_user_session_path, method: :delete, class: "btn btn-success") %>  
+  </div>      
+</div>

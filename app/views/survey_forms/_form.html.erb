@@ -1,0 +1,44 @@
+<%= nested_form_for @survey_form do |form| %>
+  <% if @survey_form.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@survey_form.errors.count, "error") %> prohibited this survey_form from being saved:</h2>
+
+      <ul>
+      <% @survey_form.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <h4> Questions Form</h4>
+  <%= form.fields_for :survey_questions do |question_form| %>
+    <div class="form-group">
+      <%= question_form.text_field :question, class: "form-control" %><br>
+      <%= question_form.select :question_type , options_for_select(SurveyQuestion::FIELDS_TYPE,question_form.object.question_type), { include_blank: '-- Select One --'}, required: true, class: "form-control" %><br>
+      <%= question_form.link_to_remove "Remove this question", class: "btn btn-info", style: "font-size: 12px;" %>
+    </div>
+    <div class="form-group">
+        <%= question_form.fields_for :survey_options do |option_form| %>
+          <%= option_form.text_field :option, class: "form-control" %><br>
+          <% option_form.link_to_remove "Remove this option", class: "btn btn-info", style: "font-size: 12px;" %>
+        <% end %><br><br>
+        <p><%= question_form.link_to_add "Add a option", :survey_options, class: "btn btn-success", style: "font-size: 12px;" %></p>
+    </div>
+  <% end %>
+  <p><%= form.link_to_add "Add a question", :survey_questions, class: "btn btn-success", style: "font-size: 12px;" %></p>
+
+  <div class="form-group">
+    <%= form.submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  suvery_form_id: 1
+  question: MyString
+  question_type: MyString
+
+two:
+  suvery_form_id: 1
+  question: MyString
+  question_type: MyString

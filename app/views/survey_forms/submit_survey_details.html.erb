@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="col-md-6">
+    <h3>Survey Form <b><%= @survey_form.name%></b></h3>
+    <%= form_for :survey_answer, url: survey_answers_path do |f| %>
+      <%= hidden_field_tag :survey_form_id, params[:id]%>
+      <% @survey_form.survey_questions.each_with_index do |question, i| %>
+        <div class="form-group">
+          <b>Question <%= i+1%></b> : <%= question.question%><br><br>
+          <% if question.survey_options.present? %>
+            <% question.survey_options.each_with_index do |option,i| %>
+              <% if question.question_type == "radio_button" %>
+                <input id="opt_<%= question.id %>_<%= i %>" type='radio' value="<%= option.id%>" name="survey_answer[<%= question.id %>][options][]" label='true'>
+                <label for="opt_<%= question.id %>_<%= i %>"><%= option.option %></label><br>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% if question.question_type == "text_area" %>
+              <%= f.text_area :answer, :name => "survey_answer[#{question.id}][answer]", class: "form-control" %><br>
+            <% elsif question.question_type == "text_field" %>
+              <%= f.text_field :answer, :name => "survey_answer[#{question.id}][answer]", class: "form-control" %><br>
+            <% end %>
+          <% end %>
+        </div>
+      <%end%>
+      <%= f.submit "Submit Answer", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
